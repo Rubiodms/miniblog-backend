@@ -4,7 +4,8 @@ const authors = express.Router();
 
 const { getAuthors,
         getAuthorById,
-        createAuthor
+        createAuthor,
+        updateAuthor
 } = require("../controllers/authors_controller");
 
 // GET todos los autores
@@ -15,5 +16,8 @@ authors.get("/authors/:id", getAuthorById);
 
 // POST crear author
 authors.post("/authors", createAuthor);
+
+// PUT ACTUALIZAR AUTOR
+authors.put("/authors/:id", updateAuthor);
 
 module.exports = authors;

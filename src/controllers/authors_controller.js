@@ -53,8 +53,37 @@ const createAuthor = async (req, res) => {
   }
 };
 
+//CONTROLADOR PARA PUT AUTHOR / ACTUALIZAR AUTORES
+
+const updateAuthor = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, bio } = req.body;
+
+    const updatedAuthor = await AuthorsService.updateAuthorService(
+      id,
+      name,
+      email,
+      bio
+    );
+
+    if (!updatedAuthor) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+    res.status(200).json(updatedAuthor);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
+
+
 module.exports = {
   getAuthors,
   getAuthorById,
-  createAuthor
+  createAuthor,
+  updateAuthor
 };
