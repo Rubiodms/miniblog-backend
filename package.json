@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
+    "test:coverage": "vitest run --coverage",
     "dev": "nodemon server.js" 
   },
   "keywords": [],
@@ -22,5 +23,19 @@
     "nodemon": "^3.1.14",
     "supertest": "^7.2.2",
     "vitest": "^4.1.5"
+  },
+  "vitest": {
+    "environment": "node",
+    "testTimeout": 15000,
+    "include": [
+      "tests/**/*.test.js"
+    ],
+    "globals": false,
+    "pool": "forks",
+    "poolOptions": {
+      "forks": {
+        "singleFork": true
+      }
+    }
   }
 }
