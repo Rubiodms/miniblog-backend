@@ -10,7 +10,9 @@ app.use(express.json()); // Configuración para recibir JSON
 const authorsRoutes = require("./routes/authors_routes");
 app.use("/api", authorsRoutes);
 
-
+//ruta post
+const postsRoutes = require("./routes/posts_routes");
+app.use("/api", postsRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" }); // Health check 
