@@ -206,3 +206,40 @@ describe("DELETE /api/posts/:id", () => {
     expect(res.body).toHaveProperty("message", "Post not found");
   });
 });
+
+// ─── GET /api/posts/author/:authorId ─────────────────────────────────────────
+
+describe("GET /api/posts/author/:authorId", () => {
+  beforeAll(async () => {
+    await request(app).post("/api/posts").send(validPost(sharedAuthorId));
+  });
+
+  it("debe responder con 200 y los posts del autor con sus datos", async () => {
+    const res = await request(app).get(`/api/posts/author/${sharedAuthorId}`);
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
+
+    const post = res.body[0];
+    expect(post).toHaveProperty("author_id", sharedAuthorId);
+    expect(post).toHaveProperty("name");
+    expect(post).toHaveProperty("email");
+  });
+
+  it("debe responder con 404 si el autor no tiene posts", async () => {
+    const authorRes = await request(app).post("/api/authors").send({
+      name: "Sin Posts",
+      email: `noposts_${Date.now()}@example.com`,
+      bio: "Este autor no tiene posts",
+    });
+    const emptyAuthorId = authorRes.body.id;
+
+    const res = await request(app).get(`/api/posts/author/${emptyAuthorId}`);
+
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "No posts found for this author");
+
+    await pool.query("DELETE FROM authors WHERE id = $1", [emptyAuthorId]);
+  });
+});
