@@ -100,3 +100,46 @@ describe("POST /api/authors", () => {
     expect(res.status).toBe(400);
   });
 });
+
+// ─── TEST: actualizar autores ──────────────────────────────────────────────
+describe("PUT /api/authors/:id", () => {
+  let authorToUpdateId;
+
+  // Crear autor antes de actualizar
+  beforeAll(async () => {
+    const res = await request(app)
+      .post("/api/authors")
+      .send(validAuthor());
+
+    authorToUpdateId = res.body.id;
+  });
+
+  // Actualización exitosa
+  it("debe actualizar el autor", async () => {
+    const updated = {
+      name: "Actualizado",
+      email: `upd_${Date.now()}@example.com`,
+      bio: "Nueva bio",
+    };
+
+    const res = await request(app)
+      .put(`/api/authors/${authorToUpdateId}`)
+      .send(updated);
+
+    expect(res.status).toBe(200);
+    expect(res.body.name).toBe(updated.name);
+  });
+
+  // Caso no encontrado
+  it("debe retornar 404 si no existe", async () => {
+    const res = await request(app)
+      .put("/api/authors/999999")
+      .send({
+        name: "X",
+        email: "x@x.com",
+        bio: "x",
+      });
+
+    expect(res.status).toBe(404);
+  });
+});
