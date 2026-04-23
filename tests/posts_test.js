@@ -178,3 +178,31 @@ describe("PUT /api/posts/:id", () => {
     expect(res.body).toHaveProperty("message", "Post not found");
   });
 });
+
+// ─── DELETE /api/posts/:id ───────────────────────────────────────────────────
+
+describe("DELETE /api/posts/:id", () => {
+  let postToDeleteId;
+
+  beforeAll(async () => {
+    const res = await request(app)
+      .post("/api/posts")
+      .send(validPost(sharedAuthorId));
+    postToDeleteId = res.body.id;
+  });
+
+  it("debe responder con 200 y confirmar la eliminación", async () => {
+    const res = await request(app).delete(`/api/posts/${postToDeleteId}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("message", "Post eliminado correctamente");
+    expect(res.body.post).toHaveProperty("id", postToDeleteId);
+  });
+
+  it("debe responder con 404 al eliminar un ID inexistente", async () => {
+    const res = await request(app).delete("/api/posts/999999");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "Post not found");
+  });
+});
