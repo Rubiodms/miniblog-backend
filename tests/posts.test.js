@@ -1,5 +1,4 @@
 const request = require("supertest");
-const { describe, it, expect, beforeAll, afterAll } = require("vitest");
 const app = require("../src/app");
 const pool = require("../src/config/db");
 
