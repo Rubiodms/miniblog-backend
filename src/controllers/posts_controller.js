@@ -132,6 +132,6 @@ module.exports = {
   createPost,
   updatePost,
   deletePost,
-  getPostsByAuthor
+  getPostsByAuthor  
  
 };
