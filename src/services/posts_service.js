@@ -48,12 +48,35 @@ const deletePostService = async (id) => {
   return result.rows[0];
 };
 
+// OBTENER POSTS POR AUTHOR CON DETALLE DEL AUTHOR
+const getPostsByAuthorService = async (authorId) => {
+  const result = await pool.query(
+    `SELECT 
+        p.id,
+        p.title,
+        p.content,
+        p.published,
+        p.created_at,
+        a.id AS author_id,
+        a.name,
+        a.email,
+        a.bio
+     FROM posts p
+     JOIN authors a ON p.author_id = a.id
+     WHERE a.id = $1`,
+    [authorId]
+  );
+
+  return result.rows;
+};
+
 
 module.exports = {
   getPostService,
   getPostServiceID,
   createPostService,
   updatePostService,
-  deletePostService
+  deletePostService,
+  getPostsByAuthorService
  
 };

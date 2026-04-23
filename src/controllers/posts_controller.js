@@ -107,11 +107,31 @@ const deletePost = async (req, res) => {
   }
 };
 
+// GET POSTS POR AUTHOR
+const getPostsByAuthor = async (req, res) => {
+  try {
+    const { authorId } = req.params;
+
+    const data = await PostService.getPostsByAuthorService(authorId);
+
+    if (data.length === 0) {
+      return res.status(404).json({ message: "No posts found for this author" });
+    }
+
+    res.status(200).json(data);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
 module.exports = {
   getPost,
   getPostById,
   createPost,
   updatePost,
-  deletePost
+  deletePost,
+  getPostsByAuthor
  
 };

@@ -5,7 +5,8 @@ const { getPost,
         getPostById,
         createPost,
         updatePost,
-        deletePost
+        deletePost,
+        getPostsByAuthor
         
 } = require("../controllers/posts_controller");
 
@@ -14,6 +15,9 @@ post.get("/posts",getPost);
 
 //GET POST POR ID
 post.get("/posts/:id",getPostById);
+
+// GET posts por author
+post.get("/posts/author/:authorId", getPostsByAuthor);
 
 // POST CREAR POSTS
 post.post("/posts", createPost);
