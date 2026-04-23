@@ -39,3 +39,32 @@ describe("GET /api/authors", () => {
     }
   });
 });
+
+// ─── TEST: obtener autor por ID ───────────────────────────────────────────
+describe("GET /api/authors/:id", () => {
+  let createdAuthorId;
+
+  // Crear autor antes de probar GET por ID
+  beforeAll(async () => {
+    const res = await request(app)
+      .post("/api/authors")
+      .send(validAuthor());
+
+    createdAuthorId = res.body.id;
+  });
+
+  // Caso exitoso
+  it("debe responder con 200 y el autor", async () => {
+    const res = await request(app).get(`/api/authors/${createdAuthorId}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.id).toBe(createdAuthorId);
+  });
+
+  // Caso no encontrado
+  it("debe responder con 404 si no existe", async () => {
+    const res = await request(app).get("/api/authors/999999");
+
+    expect(res.status).toBe(404);
+  });
+});
