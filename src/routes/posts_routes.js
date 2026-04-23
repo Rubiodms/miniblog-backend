@@ -3,7 +3,8 @@ const post = express.Router();
 
 const { getPost,
         getPostById,
-        createPost
+        createPost,
+        updatePost
         
 } = require("../controllers/posts_controller");
 
@@ -15,6 +16,9 @@ post.get("/posts/:id",getPostById);
 
 // POST CREAR POSTS
 post.post("/posts", createPost);
+
+// PUT ACRUALIZAR POST
+post.put("/posts/:id", updatePost);
 
 
 module.exports = post;

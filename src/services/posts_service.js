@@ -25,10 +25,24 @@ const createPostService = async (title, content, author_id ,published) => {
   return result.rows[0];
 };
 
+// ACTUALIZAR POST
+const updatePostService = async (id, title, content, author_id, published) => {
+  const result = await pool.query(
+    `UPDATE posts 
+     SET title = $1, content = $2, author_id = $3, published = $4 
+     WHERE id = $5 
+     RETURNING *`,
+    [title, content, author_id, published, id]
+  );
+
+  return result.rows[0];
+};
+
 
 module.exports = {
   getPostService,
   getPostServiceID,
-  createPostService
+  createPostService,
+  updatePostService
  
 };

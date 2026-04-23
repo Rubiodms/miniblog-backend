@@ -55,9 +55,40 @@ const createPost = async (req, res) => {
   }
 };
 
+//CONTROLADOR PARA ACTUALIZAR POSTS
+const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, author_id, published } = req.body;
+
+    if (!title || !content || !author_id || published === undefined) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const updatedPost = await PostService.updatePostService(
+      id,
+      title,
+      content,
+      author_id,
+      published
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json(updatedPost);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
 module.exports = {
   getPost,
   getPostById,
-  createPost
+  createPost,
+  updatePost
  
 };
