@@ -135,3 +135,46 @@ describe("POST /api/posts", () => {
     expect(res.status).toBe(500);
   });
 });
+
+// ─── PUT /api/posts/:id ──────────────────────────────────────────────────────
+
+describe("PUT /api/posts/:id", () => {
+  let postToUpdateId;
+
+  beforeAll(async () => {
+    const res = await request(app)
+      .post("/api/posts")
+      .send(validPost(sharedAuthorId));
+    postToUpdateId = res.body.id;
+  });
+
+  it("debe responder con 200 y el post actualizado", async () => {
+    const updated = {
+      title: "Título actualizado",
+      content: "Contenido actualizado en el test",
+      author_id: sharedAuthorId,
+      published: true,
+    };
+
+    const res = await request(app)
+      .put(`/api/posts/${postToUpdateId}`)
+      .send(updated);
+
+    expect(res.status).toBe(200);
+    expect(res.body.title).toBe(updated.title);
+    expect(res.body.content).toBe(updated.content);
+    expect(res.body.published).toBe(updated.published);
+  });
+
+  it("debe responder con 404 si el post a actualizar no existe", async () => {
+    const res = await request(app).put("/api/posts/999999").send({
+      title: "X",
+      content: "X",
+      author_id: sharedAuthorId,
+      published: false,
+    });
+
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "Post not found");
+  });
+});
