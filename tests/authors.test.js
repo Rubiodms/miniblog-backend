@@ -143,3 +143,33 @@ describe("PUT /api/authors/:id", () => {
     expect(res.status).toBe(404);
   });
 });
+
+// ─── TEST: eliminar autores ────────────────────────────────────────────────
+describe("DELETE /api/authors/:id", () => {
+  let authorToDeleteId;
+
+  // Crear autor antes de eliminar
+  beforeAll(async () => {
+    const res = await request(app)
+      .post("/api/authors")
+      .send(validAuthor());
+
+    authorToDeleteId = res.body.id;
+  });
+
+  // Eliminación exitosa
+  it("debe eliminar el autor", async () => {
+    const res = await request(app)
+      .delete(`/api/authors/${authorToDeleteId}`);
+
+    expect(res.status).toBe(200);
+  });
+
+  // Caso no encontrado
+  it("debe retornar 404 si no existe", async () => {
+    const res = await request(app)
+      .delete("/api/authors/999999");
+
+    expect(res.status).toBe(404);
+  });
+});
