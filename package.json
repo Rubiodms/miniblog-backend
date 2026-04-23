@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
