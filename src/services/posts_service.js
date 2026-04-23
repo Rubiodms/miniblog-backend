@@ -15,10 +15,20 @@ const getPostServiceID = async (id) => {
   return result.rows[0];
 };
 
+// FUNCION PARA CREAR POSTS
+const createPostService = async (title, content, author_id ,published) => {
+  const result = await pool.query(
+    "INSERT INTO posts (title, content, author_id ,published) VALUES ($1, $2, $3, $4) RETURNING *",
+    [title, content, author_id ,published]
+  );
+
+  return result.rows[0];
+};
 
 
 module.exports = {
   getPostService,
-  getPostServiceID
+  getPostServiceID,
+  createPostService
  
 };
