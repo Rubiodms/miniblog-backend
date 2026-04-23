@@ -83,3 +83,55 @@ describe("GET /api/posts/:id", () => {
     expect(res.body).toHaveProperty("message", "Post not found");
   });
 });
+
+// ─── POST /api/posts ─────────────────────────────────────────────────────────
+
+describe("POST /api/posts", () => {
+  it("debe responder con 201 y devolver el post creado", async () => {
+    const newPost = validPost(sharedAuthorId);
+    const res = await request(app).post("/api/posts").send(newPost);
+
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("id");
+    expect(res.body.title).toBe(newPost.title);
+    expect(res.body.content).toBe(newPost.content);
+    expect(res.body.published).toBe(newPost.published);
+  });
+
+  it("debe asociar correctamente el author_id al post creado", async () => {
+    const res = await request(app)
+      .post("/api/posts")
+      .send(validPost(sharedAuthorId));
+
+    expect(res.status).toBe(201);
+    expect(res.body.author_id).toBe(sharedAuthorId);
+  });
+
+  it("debe responder con 400 si faltan campos obligatorios", async () => {
+    const res = await request(app).post("/api/posts").send({
+      title: "Solo título",
+      // content, author_id y published ausentes
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "All fields are required");
+  });
+
+  it("debe responder con 400 si el body está vacío", async () => {
+    const res = await request(app).post("/api/posts").send({});
+
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("message", "All fields are required");
+  });
+
+  it("debe responder con 500 si el author_id no existe en la base de datos", async () => {
+    const res = await request(app).post("/api/posts").send({
+      title: "Post con autor inválido",
+      content: "Contenido cualquiera",
+      author_id: 999999,
+      published: false,
+    });
+
+    expect(res.status).toBe(500);
+  });
+});
