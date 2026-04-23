@@ -79,11 +79,32 @@ const updateAuthor = async (req, res) => {
   }
 };
 
+//controlador para DELETE AUTHOR/ BORRAR AUTORES
+const deleteAuthor = async (req, res) => {
+  try {
+    const { id } = req.params;
 
+    const deletedAuthor = await AuthorsService.deleteAuthorService(id);
+
+    if (!deletedAuthor) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+    res.status(200).json({
+      message: "Author deleted successfully",
+      author: deletedAuthor
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
 
 module.exports = {
   getAuthors,
   getAuthorById,
   createAuthor,
-  updateAuthor
+  updateAuthor,
+  deleteAuthor
 };

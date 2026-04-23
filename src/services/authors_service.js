@@ -38,11 +38,21 @@ const updateAuthorService = async (id, name, email, bio) => {
   return result.rows[0];
 };
 
+// FUNCION PARA BORRAR AUTHORS
+const deleteAuthorService = async (id) => {
+  const result = await pool.query(
+    "DELETE FROM authors WHERE id = $1 RETURNING *",
+    [id]
+  );
+
+  return result.rows[0];
+};
 
 
 module.exports = {
   getAuthorsService,
   getAuthorsServiceID,
   createAuthorService,
-  updateAuthorService
+  updateAuthorService,
+  deleteAuthorService
 };
