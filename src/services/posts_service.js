@@ -25,7 +25,7 @@ const createPostService = async (title, content, author_id ,published) => {
   return result.rows[0];
 };
 
-// ACTUALIZAR POST
+// FUNCION ACTUALIZAR POST
 const updatePostService = async (id, title, content, author_id, published) => {
   const result = await pool.query(
     `UPDATE posts 
@@ -38,11 +38,22 @@ const updatePostService = async (id, title, content, author_id, published) => {
   return result.rows[0];
 };
 
+// FUNCION PARA ELIMINAR POST
+const deletePostService = async (id) => {
+  const result = await pool.query(
+    "DELETE FROM posts WHERE id = $1 RETURNING *",
+    [id]
+  );
+
+  return result.rows[0];
+};
+
 
 module.exports = {
   getPostService,
   getPostServiceID,
   createPostService,
-  updatePostService
+  updatePostService,
+  deletePostService
  
 };

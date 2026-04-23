@@ -85,10 +85,33 @@ const updatePost = async (req, res) => {
   }
 };
 
+//CONTROLER PARA ELIMINAR POST
+const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedPost = await PostService.deletePostService(id);
+
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.status(200).json({
+      message: "Post eliminado correctamente",
+      post: deletedPost
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
 module.exports = {
   getPost,
   getPostById,
   createPost,
-  updatePost
+  updatePost,
+  deletePost
  
 };

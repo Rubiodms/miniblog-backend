@@ -4,7 +4,8 @@ const post = express.Router();
 const { getPost,
         getPostById,
         createPost,
-        updatePost
+        updatePost,
+        deletePost
         
 } = require("../controllers/posts_controller");
 
@@ -19,6 +20,9 @@ post.post("/posts", createPost);
 
 // PUT ACRUALIZAR POST
 post.put("/posts/:id", updatePost);
+
+// DELETE ELIMIRA POST
+post.delete("/posts/:id", deletePost);
 
 
 module.exports = post;
