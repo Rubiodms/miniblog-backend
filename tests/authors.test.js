@@ -68,3 +68,35 @@ describe("GET /api/authors/:id", () => {
     expect(res.status).toBe(404);
   });
 });
+
+// ─── TEST: crear autores ───────────────────────────────────────────────────
+describe("POST /api/authors", () => {
+
+  // Creación exitosa
+  it("debe crear un autor correctamente", async () => {
+    const res = await request(app)
+      .post("/api/authors")
+      .send(validAuthor());
+
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("id");
+  });
+
+  // Validación de campos faltantes
+  it("debe fallar si faltan campos", async () => {
+    const res = await request(app)
+      .post("/api/authors")
+      .send({ name: "Solo nombre" });
+
+    expect(res.status).toBe(400);
+  });
+
+  // Body vacío
+  it("debe fallar si el body está vacío", async () => {
+    const res = await request(app)
+      .post("/api/authors")
+      .send({});
+
+    expect(res.status).toBe(400);
+  });
+});
