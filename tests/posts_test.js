@@ -54,3 +54,32 @@ describe("GET /api/posts", () => {
     }
   });
 });
+
+// ─── GET /api/posts/:id ──────────────────────────────────────────────────────
+
+describe("GET /api/posts/:id", () => {
+  let createdPostId;
+
+  beforeAll(async () => {
+    const res = await request(app)
+      .post("/api/posts")
+      .send(validPost(sharedAuthorId));
+    createdPostId = res.body.id;
+  });
+
+  it("debe responder con 200 y los datos correctos del post", async () => {
+    const res = await request(app).get(`/api/posts/${createdPostId}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", createdPostId);
+    expect(res.body).toHaveProperty("title");
+    expect(res.body).toHaveProperty("author_id", sharedAuthorId);
+  });
+
+  it("debe responder con 404 si el post no existe", async () => {
+    const res = await request(app).get("/api/posts/999999");
+
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty("message", "Post not found");
+  });
+});
