@@ -29,7 +29,32 @@ const getAuthorById = async (req, res) => {
   }
 };
 
+//CONTROLADOR PARA POST AUTHORS / CREAR AUTORES
+
+const createAuthor = async (req, res) => {
+  try {
+    const { name, email, bio } = req.body;
+
+    if (!name || !email || !bio) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newAuthor = await AuthorsService.createAuthorService(
+      name,
+      email,
+      bio
+    );
+
+    res.status(201).json(newAuthor);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "internal server error" });
+  }
+};
+
 module.exports = {
   getAuthors,
-  getAuthorById
+  getAuthorById,
+  createAuthor
 };
