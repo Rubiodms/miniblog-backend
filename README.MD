@@ -24,3 +24,11 @@ Para ejecutar la suite de tests unitarios que cubren los casos críticos (CRUD y
 ```bash
 npm test
 ```
+
+## 🌐 Enlace del Proyecto (Deploy)
+
+La API se encuentra desplegada y operativa en **Railway**. Puedes probar los endpoints principales haciendo clic en los siguientes enlaces:
+
+- **📍 Listado de Autores (Prueba principal):** [https://miniblog-backend-production.up.railway.app/api/authors](https://miniblog-backend-production.up.railway.app/api/authors)
+- **📍 Listado de Publicaciones:** [https://miniblog-backend-production.up.railway.app/api/posts](https://miniblog-backend-production.up.railway.app/api/posts)
+- **📍 Estado del Servidor:** [https://miniblog-backend-production.up.railway.app/health](https://miniblog-backend-production.up.railway.app/health)
